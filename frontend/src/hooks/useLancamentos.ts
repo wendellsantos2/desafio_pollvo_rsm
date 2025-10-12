@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { lancamentoService } from '../services/lancamentoService';
-import { Lancamento } from '../types/lancamento.types';
+import { Lancamento } from '../interfaces/lancamento.types';
 
 export const useLancamentos = () => {
   const [lancamentos, setLancamentos] = useState<Lancamento[]>([]);

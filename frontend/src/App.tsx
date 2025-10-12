@@ -1,52 +1,94 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import Header from "./components/Header";
+import Saldo from "./components/Saldo";
 import ListaLancamentos from "./components/ListaLancamentos";
- 
+import Modal from "./components/Modal";
+import FormLancamento from "./components/FormLancamento";
+import Botao from "./components/Botao";
 import { lancamentoService } from "./services/lancamentoService";
+import { Lancamento, LancamentoFormData } from "./interfaces/lancamento.types";
 import "./App.css";
-import { Lancamento } from "./types/lancamento.types";
 
-function App() {
+export default function App() {
   const [lancamentos, setLancamentos] = useState<Lancamento[]>([]);
-  const [erro, setErro] = useState<string | null>(null);
-  const [carregando, setCarregando] = useState(false);
+  const [saldo, setSaldo] = useState(0);
+  const [modalAberto, setModalAberto] = useState(false);
+  const [editando, setEditando] = useState<Lancamento | null>(null);
 
-  // Função para carregar os dados da API
-  async function carregarLancamentos() {
-    setCarregando(true);
+  const carregar = useCallback(async () => {
     try {
-      const lista = await lancamentoService.listar();
+      const [lista, total] = await Promise.all([
+        lancamentoService.listar(),
+        lancamentoService.saldo(),
+      ]);
       setLancamentos(lista);
-      setErro(null);
-    } catch (e: any) {
-      setErro(e.message || "Erro ao carregar lançamentos");
-    } finally {
-      setCarregando(false);
+      setSaldo(total);
+    } catch (error) {
+      console.error("Erro ao carregar lançamentos:", error);
     }
-  }
-
-  // Executa uma vez ao montar o componente
-  useEffect(() => {
-    carregarLancamentos();
   }, []);
+
+  useEffect(() => {
+    carregar();
+  }, [carregar]);
+
+  const fecharModal = () => {
+    setModalAberto(false);
+    setEditando(null);
+  };
+
+  const handleSalvar = async (dados: LancamentoFormData & { id?: number }) => {
+    try {
+      dados.id
+        ? await lancamentoService.atualizar(dados.id, dados)
+        : await lancamentoService.criar(dados);
+
+      fecharModal();
+      carregar();
+    } catch (error) {
+      console.error("Erro ao salvar lançamento:", error);
+    }
+  };
+
+  const handleExcluir = async (id: number) => {
+    try {
+      await lancamentoService.excluir(id);
+      carregar();
+    } catch (error) {
+      console.error("Erro ao excluir lançamento:", error);
+    }
+  };
+
+  const handleEditar = (l: Lancamento) => {
+    setEditando(l);
+    setModalAberto(true);
+  };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Lançamentos Financeiros</h1>
+      <Header />
+      <Saldo valor={saldo} />
 
-        {carregando && <p>Carregando dados...</p>}
-        {erro && <p style={{ color: "red" }}>{erro}</p>}
+      <Botao tipo="primario" onClick={() => setModalAberto(true)}>
+        + Novo Lançamento
+      </Botao>
 
-        {!carregando && !erro && (
-          <ListaLancamentos
-            lancamentos={lancamentos}
-            onEditar={() => {}}
-            onExcluir={() => {}}
-          />
-        )}
-      </header>
+      <ListaLancamentos
+        lancamentos={lancamentos}
+        onEditar={handleEditar}
+        onExcluir={handleExcluir}
+      />
+
+      {modalAberto && (
+    <Modal open={modalAberto} onClose={fecharModal}>
+  <FormLancamento
+    lancamento={editando}
+    onSalvar={handleSalvar}
+    fechar={fecharModal}
+  />
+</Modal>
+
+      )}
     </div>
   );
 }
-
-export default App;

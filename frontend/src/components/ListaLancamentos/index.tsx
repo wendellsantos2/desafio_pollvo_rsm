@@ -1,36 +1,40 @@
- 
-import { Lancamento } from "../../types/lancamento.types";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+import { Lancamento } from "../../interfaces/lancamento.types";
 import Item from "./Item";
- 
-import styles from "./ListaLancamentos.module.scss";
 
-interface ListaLancamentosProps {
+interface Props {
   lancamentos: Lancamento[];
   onEditar: (l: Lancamento) => void;
   onExcluir: (id: number) => void;
 }
 
-export default function ListaLancamentos({
-  lancamentos,
-  onEditar,
-  onExcluir,
-}: ListaLancamentosProps) {
+export default function ListaLancamentos({ lancamentos, onEditar, onExcluir }: Props) {
   return (
-    <table className={styles.tabela}>
-      <thead>
-        <tr>
-          <th>Descrição</th>
-          <th>Valor</th>
-          <th>Tipo</th>
-          <th>Data</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {lancamentos.map((l) => (
-          <Item key={l.id} lancamento={l} onEditar={onEditar} onExcluir={onExcluir} />
-        ))}
-      </tbody>
-    </table>
+    <TableContainer component={Paper} sx={{ mb: 3 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Descrição</TableCell>
+            <TableCell>Valor</TableCell>
+            <TableCell>Tipo</TableCell>
+            <TableCell>Data</TableCell>
+            <TableCell>Ações</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {lancamentos.map((l) => (
+            <Item key={l.id} lancamento={l} onEditar={onEditar} onExcluir={onExcluir} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

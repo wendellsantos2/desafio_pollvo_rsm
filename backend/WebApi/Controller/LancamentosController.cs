@@ -52,12 +52,19 @@ namespace webApi.Controller
             [HttpPut("{id}")]
             public async Task<ActionResult> Update(int id, [FromBody] LancamentoFinanceiro lancamento)
             {
-                if (id != lancamento.Id)
-                    return BadRequest();
+                var existente = await _repo.GetByIdAsync(id);
+                if (existente == null)
+                    return NotFound();
 
-                await _repo.UpdateAsync(lancamento);
+                existente.Descricao = lancamento.Descricao;
+                existente.Valor = lancamento.Valor;
+                existente.Tipo = lancamento.Tipo;
+                existente.Data = lancamento.Data;
+
+                await _repo.UpdateAsync(existente);
                 return NoContent();
             }
+
 
             [HttpDelete("{id}")]
             public async Task<ActionResult> Delete(int id)

@@ -1,0 +1,19 @@
+.saldo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .positivo {
+    color: #2e7d32;
+  }
+
+  .negativo {
+    color: #d32f2f;
+  }
+}
