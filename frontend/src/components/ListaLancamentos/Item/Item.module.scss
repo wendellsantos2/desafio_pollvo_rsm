@@ -1,0 +1,46 @@
+.item {
+  transition: background 0.2s ease;
+}
+
+.receita {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.despesa {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.acoes {
+  display: flex;
+  gap: 0.5rem;
+
+  button {
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+
+  .btnEditar {
+    background-color: #0078d7;
+    color: #fff;
+
+    &:hover {
+      background-color: #005fa3;
+    }
+  }
+
+  .btnExcluir {
+    background-color: #dc2626;
+    color: #fff;
+
+    &:hover {
+      background-color: #b91c1c;
+    }
+  }
+}
