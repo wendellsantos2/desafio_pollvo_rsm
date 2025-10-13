@@ -1,19 +1,11 @@
-.saldo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1.5rem 0;
+.modalPaper {
+  background-color: transparent !important;  
+  box-shadow: none !important;             
+  overflow: visible !important;             
+}
 
-  h2 {
-    font-size: 1.4rem;
-    font-weight: 600;
-  }
-
-  .positivo {
-    color: #2e7d32;
-  }
-
-  .negativo {
-    color: #d32f2f;
-  }
+.modalBackdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;  
+  backdrop-filter: blur(2px);                    
+  transition: opacity 0.3s ease;                   
 }

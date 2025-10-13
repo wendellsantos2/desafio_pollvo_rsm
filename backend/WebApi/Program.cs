@@ -13,7 +13,6 @@ builder.Services.AddDbContext<ContextBase>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
  
 builder.Services.AddScoped(typeof(InterfaceGeneric<>), typeof(RepositorioGeneric<>));
-
 builder.Services.AddScoped<LancamentoRepository>();
  
 builder.Services.AddCors(options =>

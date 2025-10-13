@@ -1,4 +1,5 @@
-import { Dialog, DialogContent } from "@mui/material";
+import { Dialog } from "@mui/material";
+import styles from "./Modal.module.scss";
 
 interface Props {
   open: boolean;
@@ -8,8 +9,21 @@ interface Props {
 
 export default function Modal({ open, onClose, children }: Props) {
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogContent>{children}</DialogContent>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      PaperProps={{
+        className: styles.modalPaper,
+      }}
+      slotProps={{
+        backdrop: {
+          className: styles.modalBackdrop,
+        },
+      }}
+    >
+      {children}
     </Dialog>
   );
 }
