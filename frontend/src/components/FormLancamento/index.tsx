@@ -99,7 +99,7 @@ export default function FormLancamento({ lancamento, onSalvar, fechar }: Props) 
             }}
           />
 
-          {/* Tipo */}
+    
           <TextField
             select
             label="Tipo"
@@ -115,7 +115,7 @@ export default function FormLancamento({ lancamento, onSalvar, fechar }: Props) 
             </MenuItem>
           </TextField>
 
-          {/* Data */}
+       
           <TextField
             label="Data"
             type="date"
@@ -133,7 +133,7 @@ export default function FormLancamento({ lancamento, onSalvar, fechar }: Props) 
             }}
           />
 
-          {/* Botões */}
+     
           <div className={styles.actions}>
             <Button
               onClick={fechar}

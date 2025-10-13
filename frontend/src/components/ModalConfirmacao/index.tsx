@@ -2,18 +2,18 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  Button,
   Typography,
-  
   Divider,
   Slide,
+  Button,
+  Stack,
+  CircularProgress,
 } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
+import styles from "./ModalConfirmacao.module.scss";
 
- 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children: React.ReactElement },
   ref: React.Ref<unknown>
@@ -21,12 +21,13 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface Props {
+interface ModalConfirmacaoProps {
   open: boolean;
   titulo: string;
   mensagem: string;
   onConfirmar: () => void;
   onCancelar: () => void;
+  carregando?: boolean;
 }
 
 export default function ModalConfirmacao({
@@ -35,66 +36,99 @@ export default function ModalConfirmacao({
   mensagem,
   onConfirmar,
   onCancelar,
-}: Props) {
+  carregando = false,
+}: ModalConfirmacaoProps) {
   return (
     <Dialog
       open={open}
-      onClose={onCancelar}
       TransitionComponent={Transition}
+      keepMounted
+      onClose={onCancelar}
+      maxWidth="xs"
+      fullWidth
       PaperProps={{
         sx: {
           borderRadius: 3,
           p: 2,
-          boxShadow: 8,
-          maxWidth: 420,
-          width: "100%",
+          boxShadow: "0 6px 18px rgba(0, 0, 0, 0.12)",
         },
       }}
     >
-      <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-        <WarningAmberRoundedIcon color="warning" fontSize="medium" />
-        <Typography variant="h6" fontWeight={600}>
-          {titulo}
-        </Typography>
-      </DialogTitle>
+ 
+<DialogTitle sx={{ pb: 1 }}>
+  <Stack
+    direction="row"
+    alignItems="center"
+    spacing={1.2}
+    sx={{
+      display: "flex",
+      flexWrap: "nowrap",
+      alignItems: "center",
+      gap: 1,
+    }}
+  >
+    <WarningAmberRoundedIcon color="warning" fontSize="medium" />
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      sx={{
+        flex: 1,
+        fontSize: "1rem",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        "@media (max-width: 420px)": {
+          fontSize: "0.9rem",  
+        },
+      }}
+    >
+      {titulo}
+    </Typography>
+  </Stack>
+</DialogTitle>
 
-      <Divider />
 
-      <DialogContent>
+
+      <Divider sx={{ mb: 1 }} />
+
+    
+      <DialogContent sx={{ pb: 1 }}>
         <Typography
           variant="body1"
           color="text.secondary"
-          sx={{ mt: 1.5, mb: 0.5 }}
+          whiteSpace="pre-line"
+          sx={{ textAlign: "left", lineHeight: 1.6 }}
         >
           {mensagem}
         </Typography>
       </DialogContent>
 
-      <DialogActions sx={{ px: 3, pb: 2, pt: 0 }}>
+     
+      <div className={styles.actions}>
         <Button
           onClick={onCancelar}
           variant="outlined"
-          sx={{
-            borderRadius: 2,
-            textTransform: "none",
-          }}
+          color="inherit"
+          disabled={carregando}
+          className={styles.btnCancelar}
         >
           Cancelar
         </Button>
 
         <Button
-          onClick={onConfirmar}
           variant="contained"
           color="error"
-          sx={{
-            borderRadius: 2,
-            textTransform: "none",
-            boxShadow: "0 2px 5px rgba(255, 0, 0, 0.2)",
-          }}
+          onClick={onConfirmar}
+          disabled={carregando}
+          className={styles.btnSalvar}
         >
-          Confirmar
+          {carregando ? (
+            <CircularProgress size={22} color="inherit" />
+          ) : (
+            "Confirmar"
+          )}
         </Button>
-      </DialogActions>
+      </div>
     </Dialog>
   );
 }

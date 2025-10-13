@@ -1,19 +1,54 @@
-.saldoContainer {
-  background: #fff;
-  padding: 1.2rem;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1.5rem;
+.card {
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #fff;
   text-align: center;
+  padding: 1.2rem 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
 
-  p {
-    color: #666;
-    margin-bottom: 0.3rem;
-  }
+.cardContent {
+  padding: 1rem !important;
+}
 
-  h2 {
-    color: #111;
-    margin: 0;
-    font-weight: 600;
-  }
+.titulo {
+  font-size: 1.5rem !important;  
+  font-weight: 500 !important;
+  color: #4b5563 !important;
+  letter-spacing: 0.5px;
+}
+
+.valorBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.icone {
+  margin-right: 0.5rem;
+  font-size: 36px !important;
+}
+
+.iconePositivo {
+  color: #2e7d32 !important;  
+}
+
+.iconeNegativo {
+  color: #d32f2f !important;  
+}
+
+.valor {
+  font-size: 2.4rem !important;  
+  font-weight: 700 !important;   
+  line-height: 1.1;
+}
+
+.valorPositivo {
+  color: #2e7d32 !important;
+}
+
+.valorNegativo {
+  color: #d32f2f !important;
 }

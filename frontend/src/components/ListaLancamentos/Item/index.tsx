@@ -35,12 +35,12 @@ export default function Item({ lancamento, onEditar, onExcluir }: Props) {
           {new Date(lancamento.data).toLocaleDateString("pt-BR")}
         </TableCell>
 
-        {/* 🔹 Ações centralizadas abaixo */}
+ 
         <TableCell
           align="center"
           sx={{
-            verticalAlign: "bottom", // alinha no rodapé da célula
-            pb: 1, // espaçamento inferior igual ao cabeçalho
+            verticalAlign: "bottom",  
+            pb: 1, 
           }}
         >
           <Box

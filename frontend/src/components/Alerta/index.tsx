@@ -1,14 +1,15 @@
 import { Snackbar, Alert, AlertColor } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import styles from "./Alerta.module.scss";
 
 interface AlertaProps {
   mensagem: string;
-  tipo?: AlertColor; 
+  tipo?: AlertColor;
   aberto?: boolean;
   onFechar?: () => void;
   duracao?: number;
 }
- 
+
 export default function Alerta({
   mensagem,
   tipo = "success",
@@ -18,9 +19,14 @@ export default function Alerta({
 }: AlertaProps) {
   const [visivel, setVisivel] = useState(aberto);
 
+ 
+  useEffect(() => {
+    setVisivel(aberto);
+  }, [aberto]);
+
   const handleClose = () => {
     setVisivel(false);
-    if (onFechar) onFechar();
+    onFechar?.();
   };
 
   return (
@@ -34,11 +40,7 @@ export default function Alerta({
         onClose={handleClose}
         severity={tipo}
         variant="filled"
-        sx={{
-          borderRadius: 2,
-          fontWeight: 500,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-        }}
+        className={styles.alerta}
       >
         {mensagem}
       </Alert>
