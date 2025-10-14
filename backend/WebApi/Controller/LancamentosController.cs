@@ -1,6 +1,7 @@
 ﻿using Entities.Entidades;
 using Infra.repository;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.DTOs;
 
 namespace WebApi.Controller
 {
@@ -15,7 +16,10 @@ namespace WebApi.Controller
             _repo = repo;
         }
 
-        // GET: api/lancamentos
+        ///<summary>
+        /// Retorna todos os lançamentos financeiros cadastrados.
+        /// </summary>
+        /// <returns>Lista de lançamentos financeiros.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LancamentoFinanceiro>>> GetAll()
         {
@@ -23,7 +27,10 @@ namespace WebApi.Controller
             return Ok(lista);
         }
 
-        // GET: api/lancamentos/saldo
+        /// <summary>
+        /// Retorna o saldo total (somando receitas e despesas).
+        /// </summary>
+        /// <returns>Saldo total atual.</returns>
         [HttpGet("saldo")]
         public async Task<ActionResult<decimal>> GetSaldo()
         {
@@ -31,7 +38,11 @@ namespace WebApi.Controller
             return Ok(saldo);
         }
 
-        // GET: api/lancamentos/5
+        /// <summary>
+        /// Retorna um lançamento financeiro pelo seu ID.
+        /// </summary>
+        /// <param name="id">ID do lançamento.</param>
+        /// <returns>O lançamento encontrado ou mensagem de erro.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<LancamentoFinanceiro>> GetById(int id)
         {
@@ -42,19 +53,37 @@ namespace WebApi.Controller
             return Ok(lanc);
         }
 
-        // POST: api/lancamentos
+        /// <summary>
+        /// Cria um novo lançamento financeiro.
+        /// </summary>
+        /// <param name="lancamentoDto">Objeto contendo os dados do lançamento.</param>
+        /// <returns>Lançamento criado com status 201.</returns>
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] LancamentoFinanceiro lancamento)
+        public async Task<ActionResult> Create([FromBody] CreateLancamentoDto lancamentoDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
+            var lancamento = new LancamentoFinanceiro
+            {
+                Descricao = lancamentoDto.Descricao,
+                Valor = lancamentoDto.Valor,
+                Tipo = lancamentoDto.Tipo,
+                Data = lancamentoDto.Data
+            };
 
             await _repo.Add(lancamento);
 
             return CreatedAtAction(nameof(GetById), new { id = lancamento.Id }, lancamento);
         }
 
-        // PUT: api/lancamentos/5
+
+        /// <summary>
+        /// Atualiza um lançamento financeiro existente.
+        /// </summary>
+        /// <param name="id">ID do lançamento.</param>
+        /// <param name="lancamento">Objeto com os novos dados do lançamento.</param>
+        /// <returns>Status 204 se a atualização for bem-sucedida.</returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] LancamentoFinanceiro lancamento)
         {
@@ -74,7 +103,11 @@ namespace WebApi.Controller
             return NoContent();
         }
 
-        // DELETE: api/lancamentos/5
+        /// <summary>
+        /// Remove um lançamento financeiro pelo ID.
+        /// </summary>
+        /// <param name="id">ID do lançamento a ser excluído.</param>
+        /// <returns>Status 204 se a exclusão for bem-sucedida.</returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

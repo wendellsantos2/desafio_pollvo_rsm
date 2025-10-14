@@ -1,12 +1,10 @@
 ﻿using Entities.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities.Entidades
+namespace WebApi.DTOs
 {
-    public class LancamentoFinanceiro
+    public class CreateLancamentoDto
     {
-        public int Id { get; set; }
-
         [Required]
         public string Descricao { get; set; }
 
@@ -14,8 +12,9 @@ namespace Entities.Entidades
         [Range(0.01, double.MaxValue, ErrorMessage = "O valor deve ser maior que zero.")]
         public decimal Valor { get; set; }
 
+
         [Required]
-        public TipoLancamento Tipo { get; set; } // Agora é um ENUM
+        public TipoLancamento Tipo { get; set; } 
 
         [Required]
         public DateTime Data { get; set; }

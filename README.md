@@ -1,8 +1,20 @@
-# desafio_pollvo_rsm
+# Desafio_pollvo_rsm
 
-Aplicação Full-Stack com React no frontend e .NET 8 (Web API em DDD + EF Core) no backend.
+Olá! 👋
+Este projeto foi desenvolvido por Wendell Santos como parte do Desafio Técnico – Desenvolvedor FullStack (.NET/React) da Pollvo.
 
-Este guia reúne instalação, configuração, execução, migrações, endpoints, testes e boas práticas de commits — tudo em um só lugar.
+O objetivo deste desafio é demonstrar a capacidade de construir uma aplicação Full-Stack completa, aplicando boas práticas de arquitetura, organização de código e integração entre frontend e backend.
+
+A proposta consiste em um CRUD de lançamentos financeiros (despesas e receitas), implementado com as seguintes tecnologias:
+
+Backend: .NET 8 (Web API com arquitetura DDD e Entity Framework Core)
+
+Frontend: React + TypeScript (com MUI e Axios)
+
+Banco de Dados: SQL Server (padrão), utilizando Entity Framework Core (EF Core) para mapeamento objeto-relacional, com opção de EF Core In-Memory para testes rápidos
+
+A aplicação foi projetada para ser simples de executar, bem estruturada e escalável, seguindo princípios de arquitetura limpa e desacoplamento entre camadas.
+
 
 ## Sumário
 
@@ -14,16 +26,18 @@ Este guia reúne instalação, configuração, execução, migrações, endpoint
 - [Migrations (EF Core)](#migrations-ef-core)
 - [Endpoints](#endpoints)
 - [Testes](#testes)
- 
 - [Licença](#licença)
 
 ## Pré-requisitos
 
-- **Node.js LTS** (com npm)
+- **Node.js LTS** (com npm)  
+  [https://nodejs.org/pt/download](https://nodejs.org/pt/download)
+
 - **.NET SDK 8+** → verifique com:
   ```bash
   dotnet --info
   ```
+
 - **SQL Server** (Developer, Express ou LocalDB)
 
 **Opcional:** Ferramentas EF Core
@@ -78,16 +92,15 @@ Acesse em: http://localhost:3000
 
 A Web API é o projeto de startup.
 
-### Executar a API
-
-```bash
-cd backend/WebApi
-dotnet run
-```
-
-A API será executada em https://localhost:7000
-
 ## Configuração
+
+1️⃣ Criar o banco de dados da aplicação(lancamentos_financeiros)
+
+Antes de rodar a aplicação, crie o banco manualmente no SQL Server (pode ser pelo SQL Server Management Studio ou pelo comando abaixo):
+
+CREATE DATABASE lancamentos_financeiros;
+
+2️⃣ Ajustar a ConnectionString
 
 No arquivo `WebApi/appsettings.Development.json`, ajuste a ConnectionString:
 
@@ -106,11 +119,6 @@ No arquivo `WebApi/appsettings.Development.json`, ajuste a ConnectionString:
 }
 ```
 
-**Dica:** Ajuste o Server conforme sua instância SQL:
-- `localhost`
-- `MSSQLSERVER`
-- `(localdb)\MSSQLLocalDB`
-
 ## Migrations (EF Core)
 
 ### Criar migration
@@ -124,6 +132,17 @@ Add-Migration Initial -Context ContextBase -Project Infra -StartupProject WebApi
 ```bash
 Update-Database -Context ContextBase -Project Infra -StartupProject WebApi
 ```
+
+### Executar a API
+
+```bash
+cd backend/WebApi
+
+dotnet run --project WebApi
+
+```
+
+A API será executada em https://localhost:7000/swagger/index.html
 
 ## Endpoints
 
@@ -149,7 +168,6 @@ Update-Database -Context ContextBase -Project Infra -StartupProject WebApi
 - **Vermelho** → falha
 - **Cinza** → ignorado
 
- 
 ## Licença
 
 Este projeto é de uso educacional e livre para estudos e demonstrações.

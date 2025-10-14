@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Entities.Entidades;
+using Entities.Enums;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using WebApi.Controller;
 using Xunit;
-using Entities.Entidades;
 
 namespace LancamentoFinanceiro.Tests
 {
@@ -15,8 +16,9 @@ namespace LancamentoFinanceiro.Tests
         {
             public List<Entities.Entidades.LancamentoFinanceiro> Dados = new()
             {
-                new Entities.Entidades.LancamentoFinanceiro { Id = 1, Descricao = "Salário", Valor = 5000, Tipo = "Receita" },
-                new Entities.Entidades.LancamentoFinanceiro { Id = 2, Descricao = "Aluguel", Valor = 1500, Tipo = "Despesa" }
+             new Entities.Entidades.LancamentoFinanceiro { Id = 1, Descricao = "Salário", Valor = 5000, Tipo = TipoLancamento.Receita },
+            new Entities.Entidades.LancamentoFinanceiro { Id = 2, Descricao = "Aluguel", Valor = 1500, Tipo = TipoLancamento.Despesa }
+
             };
 
             public Task<List<Entities.Entidades.LancamentoFinanceiro>> GetAllOrderedAsync()
@@ -27,10 +29,11 @@ namespace LancamentoFinanceiro.Tests
 
             public Task<decimal> GetSaldoAsync()
             {
-                var receitas = Dados.Where(x => x.Tipo == "Receita").Sum(x => x.Valor);
-                var despesas = Dados.Where(x => x.Tipo == "Despesa").Sum(x => x.Valor);
+                var receitas = Dados.Where(x => x.Tipo == TipoLancamento.Receita).Sum(x => x.Valor);
+                var despesas = Dados.Where(x => x.Tipo == TipoLancamento.Despesa).Sum(x => x.Valor);
                 return Task.FromResult(receitas - despesas);
             }
+
 
             public Task Add(Entities.Entidades.LancamentoFinanceiro lanc)
             {
@@ -103,7 +106,13 @@ namespace LancamentoFinanceiro.Tests
         public async Task Create_DeveAdicionarLancamento()
         {
             var repoFake = new LancamentoRepositoryFake();
-            var novo = new Entities.Entidades.LancamentoFinanceiro { Id = 3, Descricao = "Freelancer", Valor = 2000, Tipo = "Receita" };
+            var novo = new Entities.Entidades.LancamentoFinanceiro
+            {
+                Id = 3,
+                Descricao = "Freelancer",
+                Valor = 2000,
+                Tipo = TipoLancamento.Receita
+            };
 
             await repoFake.Add(novo);
             var resultado = new CreatedAtActionResult("GetById", "Lancamentos", new { id = novo.Id }, novo);
@@ -117,7 +126,14 @@ namespace LancamentoFinanceiro.Tests
         public async Task Update_DeveAtualizarLancamento()
         {
             var repoFake = new LancamentoRepositoryFake();
-            var atualizado = new Entities.Entidades.LancamentoFinanceiro { Id = 1, Descricao = "Salário Atualizado", Valor = 5500, Tipo = "Receita" };
+            var atualizado = new Entities.Entidades.LancamentoFinanceiro
+            {
+                Id = 1,
+                Descricao = "Salário Atualizado",
+                Valor = 5500,
+                Tipo = TipoLancamento.Receita
+            };
+
 
             await repoFake.Update(atualizado);
             var resultado = new NoContentResult();

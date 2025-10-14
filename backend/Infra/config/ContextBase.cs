@@ -29,12 +29,19 @@ namespace Entities.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configura o campo Valor como decimal(18,2)
             modelBuilder.Entity<LancamentoFinanceiro>()
                 .Property(p => p.Valor)
                 .HasColumnType("decimal(18,2)");
 
+            // Faz o EF Core salvar o enum Tipo como texto ("Receita" / "Despesa")
+            modelBuilder.Entity<LancamentoFinanceiro>()
+                .Property(p => p.Tipo)
+                .HasConversion<string>();
+
             base.OnModelCreating(modelBuilder);
         }
+
 
     }
 }

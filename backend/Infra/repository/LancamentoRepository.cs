@@ -1,11 +1,10 @@
 ﻿using Entities.Context;
 using Entities.Entidades;
+using Entities.Enums;
 using Infra.repository.generics;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infra.repository
@@ -18,7 +17,10 @@ namespace Infra.repository
         {
             _context = context;
         }
- 
+
+        /// <summary>
+        /// Retorna todos os lançamentos financeiros ordenados pela data (mais recentes primeiro).
+        /// </summary>
         public async Task<List<LancamentoFinanceiro>> GetAllOrderedAsync()
         {
             return await _context.Lancamentos
@@ -26,15 +28,17 @@ namespace Infra.repository
                                  .ToListAsync();
         }
 
- 
+        /// <summary>
+        /// Calcula o saldo total (receitas - despesas).
+        /// </summary>
         public async Task<decimal> GetSaldoAsync()
         {
             var receitas = await _context.Lancamentos
-                .Where(x => x.Tipo == "Receita")
+                .Where(x => x.Tipo == TipoLancamento.Receita)
                 .SumAsync(x => x.Valor);
 
             var despesas = await _context.Lancamentos
-                .Where(x => x.Tipo == "Despesa")
+                .Where(x => x.Tipo == TipoLancamento.Despesa)
                 .SumAsync(x => x.Valor);
 
             return receitas - despesas;
